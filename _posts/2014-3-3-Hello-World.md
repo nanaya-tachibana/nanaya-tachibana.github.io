@@ -1,6 +1,7 @@
 ---
 layout: post
-title: You're up and running!
+title: Peak Finding
+tags: [algorithm, 6006]
 ---
 This is a problem from MIT Course 6.006.
 
@@ -31,37 +32,36 @@ result in $O(1)$ time. Thus the recurrence of this problem is $ T(n) = T(\frac{n
 which gives the running time, $O(n \log n)$.
 
 *Python Impelementation*
-
 ```Python
-    def peak1d(A, left=None, right=None):
-        if left is None:
-            left = 0
-        if right is None:
-            right = len(A) - 1
-        if left > right:
-            return None
+def peak1d(A, left=None, right=None):
+    if left is None:
+        left = 0
+    if right is None:
+        right = len(A) - 1
+    if left > right:
+        return None
 
-        middle = (left + right) // 2
-        neighbor = find_better_neighbor(A, middle, left, right)
+    middle = (left + right) // 2
+    neighbor = find_better_neighbor(A, middle, left, right)
 
-        if middle == neighbor:
-            return middle
-        elif middle > neighbor:
-            return peak1d(A, left, middle - 1)
-        else:
-            return peak1d(A, middle + 1, right)
+    if middle == neighbor:
+        return middle
+    elif middle > neighbor:
+        return peak1d(A, left, middle - 1)
+    else:
+        return peak1d(A, middle + 1, right)
 
 
-    def find_better_neighbor(A, i, left, right):
-        """
-        If A[i] has a better neighbor, return it. Otherwise return itself.
-        """
-        best = i
-        if i - 1 >= left and A[i] < A[i - 1]:
-            best -= 1
-        elif i + 1 <= right and A[i] < A[i + 1]:
-            best += 1
-        return best
+def find_better_neighbor(A, i, left, right):
+    """
+    If A[i] has a better neighbor, return it. Otherwise return itself.
+    """
+    best = i
+    if i - 1 >= left and A[i] < A[i - 1]:
+        best -= 1
+    elif i + 1 <= right and A[i] < A[i + 1]:
+        best += 1
+    return best
 ```
 
 # 2D Peak Finding
@@ -110,50 +110,49 @@ $O(1)$ time. Thus the recurrence is $ T(m, n) = T(m, \frac{n}{2}) + O(m) $, whic
 gives the running time $O(m \log n)$.
 
 *Python Impelementation*(almost the same as the 1D version)
-
 ```Python
-    def peak2dv1(M, left=None, right=None):
-        nrow = len(M)
-        if nrow == 0:
-            return None
-        if left is None:
-            left = 0
-        if right is None:
-            right = len(M[0]) - 1
-        if left > right:
-            return None
+def peak2dv1(M, left=None, right=None):
+    nrow = len(M)
+    if nrow == 0:
+        return None
+    if left is None:
+        left = 0
+    if right is None:
+        right = len(M[0]) - 1
+    if left > right:
+        return None
 
-        middle = (left + right) // 2
-        divider = find_maximum([(M[i][middle], (i, middle)) for i in range(nrow)])
-        neighbor = find_better_neighbor(M, divider, left, right, 0, nrow - 1)
+    middle = (left + right) // 2
+    divider = find_maximum([(M[i][middle], (i, middle)) for i in range(nrow)])
+    neighbor = find_better_neighbor(M, divider, left, right, 0, nrow - 1)
 
-        if divider == neighbor:
-            return divider
-        elif divider[1] > neighbor[1]:
-            return peak2dv1(M, left, middle - 1)
-        else:
-            return peak2dv1(M, middle + 1, right)
-
-
-    def find_maximum(l):
-        max, max_indices = l[0]
-        for e, ind in l[1:]:
-            if e > max:
-                max = e
-                max_indices = ind
-        return max_indices
+    if divider == neighbor:
+        return divider
+    elif divider[1] > neighbor[1]:
+        return peak2dv1(M, left, middle - 1)
+    else:
+        return peak2dv1(M, middle + 1, right)
 
 
-    def find_better_neighbor(M, ind, left, right, up, down):
-        best = ind
-        i, j = ind
-        if i - 1 >= left and M[i][j] < M[i - 1][j]:
-            best = (i - 1, j)
-        elif i + 1 <= right and M[i][j] < M[i + 1][j]:
-            best = (i + 1, j)
-        elif j - 1 >= up and M[i][j] < M[i][j - 1]:
-            best = (i, j - 1)
-        elif j + 1 <= down and M[i][j] < M[i][j + 1]:
-            best = (i, j + 1)
-        return best
+def find_maximum(l):
+    max, max_indices = l[0]
+    for e, ind in l[1:]:
+        if e > max:
+            max = e
+            max_indices = ind
+    return max_indices
+
+
+def find_better_neighbor(M, ind, left, right, up, down):
+    best = ind
+    i, j = ind
+    if i - 1 >= left and M[i][j] < M[i - 1][j]:
+        best = (i - 1, j)
+    elif i + 1 <= right and M[i][j] < M[i + 1][j]:
+        best = (i + 1, j)
+    elif j - 1 >= up and M[i][j] < M[i][j - 1]:
+        best = (i, j - 1)
+    elif j + 1 <= down and M[i][j] < M[i][j + 1]:
+        best = (i, j + 1)
+    return best
 ```
