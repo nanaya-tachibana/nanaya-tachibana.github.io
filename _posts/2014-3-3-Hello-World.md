@@ -31,7 +31,8 @@ In each recursion, we reduce size $n$ to size $\frac{n}{2}$ in $O(1)$ time and c
 result in $O(1)$ time. Thus the recurrence of this problem is $ T(n) = T(\frac{n}{2}) + O(1) $,
 which gives the running time, $O(n \log n)$.
 
-*Python Impelementation*
+*Python Impelementation*  
+
 ```Python
 def peak1d(A, left=None, right=None):
     if left is None:
@@ -110,6 +111,7 @@ $O(1)$ time. Thus the recurrence is $ T(m, n) = T(m, \frac{n}{2}) + O(m) $, whic
 gives the running time $O(m \log n)$.
 
 *Python Impelementation*(almost the same as the 1D version)
+
 ```Python
 def peak2dv1(M, left=None, right=None):
     nrow = len(M)
